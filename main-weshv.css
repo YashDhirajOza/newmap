@@ -1,0 +1,244 @@
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #FFA000;
+    --background-color: #F5F5F5;
+    --text-color: #333333;
+    --border-radius: 8px;
+    --nav-height: 64px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #1a202c;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    height: var(--nav-height);
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+}
+
+nav .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ed64a6;
+}
+
+nav input[type="text"] {
+    padding: 0.5rem 1rem;
+    background-color: #2d3748;
+    color: white;
+    border: 1px solid #4a5568;
+    border-radius: var(--border-radius);
+    outline: none;
+}
+
+nav input[type="text"]:focus {
+    box-shadow: 0 0 0 3px rgba(237, 100, 166, 0.5);
+}
+
+/* Map Styles */
+#map {
+    flex-grow: 1;
+    width: 100%;
+    height: calc(100vh - var(--nav-height));
+}
+
+/* Button Styles */
+.btn {
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background-color: #FF4081;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #E91E63;
+}
+
+.btn-secondary {
+    background-color: #3F51B5;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #303F9F;
+}
+
+/* Leaflet Marker Icon Styles */
+.leaflet-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.leaflet-marker-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    font-size: 24px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.leaflet-marker-icon:hover {
+    transform: scale(1.1);
+}
+
+.donor-icon { background-color: rgba(255, 165, 0, 0.8); }
+.ngo-icon { background-color: rgba(30, 144, 255, 0.8); }
+.volunteer-icon { background-color: rgba(144, 238, 144, 0.8); }
+.host-icon { background-color: rgba(255, 105, 180, 0.8); }
+.picker-icon { background-color: rgba(255, 222, 173, 0.8); }
+.institution-icon { background-color: rgba(128, 0, 128, 0.8); }
+
+/* Popup Styles */
+.leaflet-popup-content-wrapper {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius);
+    box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+}
+
+.leaflet-popup-content {
+    margin: 0.5rem 0.75rem;
+    line-height: 1.4;
+}
+
+.popup-content {
+    font-size: 14px;
+}
+
+.popup-content b {
+    color: var(--primary-color);
+}
+
+/* Journey Line Styles */
+.leaflet-interactive {
+    stroke-width: 3;
+    stroke-opacity: 0.7;
+    animation: dash 5s linear forwards;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav .container {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+    }
+
+    nav input[type="text"] {
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+
+/* Additional UI Element Styles */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

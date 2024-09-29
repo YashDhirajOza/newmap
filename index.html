@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeShv Map</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="main-weshv.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+</head>
+<body>
+    <nav class="bg-gray-900 shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-pink-500 mr-4">WeShv</span>
+                <input type="text" placeholder="Search..." class="px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500">
+            </div>
+            <div class="flex space-x-4 items-center">
+                <button class="btn-primary font-bold py-2 px-4 rounded" onclick="simulateFoodJourney()">Simulate Food Journey</button>
+                <button class="btn-primary font-bold py-2 px-4 rounded" onclick="scheduleEvent()">Schedule Event</button>
+                <button class="btn-primary font-bold py-2 px-4 rounded" onclick="createCommunityPage()">Create Community Page</button>
+                <button class="text-white hover:text-gray-300">Login</button>
+                <button class="btn-secondary font-bold py-2 px-4 rounded">Get started</button>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="map" style="height: 600px;"></div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+       <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    <script src="weshv.js"></script>
+</body>
+</html>
