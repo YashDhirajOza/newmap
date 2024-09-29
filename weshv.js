@@ -1,21 +1,12 @@
-// Initializing the map with Gujarat coordinates
-const gujaratCoords = [22.2587, 71.1924];
-const map = L.map('map').setView(gujaratCoords, 7);
+// Initializing the map with Ahmedabad coordinates
+const ahmedabadCoords = [23.0225, 72.5714];
+const map = L.map('map').setView(ahmedabadCoords, 12);
 const markers = {};
 const foodJourneys = [];
 
 // Adding OpenStreetMap tile layer to the map
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
-}).addTo(map);
-
-// Initialize Leaflet Routing Machine control
-const routingControl = L.Routing.control({
-    show: false,
-    addWaypoints: false,
-    draggableWaypoints: false,
-    fitSelectedRoutes: true,
-    showAlternatives: false
 }).addTo(map);
 
 const iconSize = [50, 50];
@@ -28,18 +19,18 @@ const hostIcon = L.divIcon({ html: '🏠', className: 'host-icon', iconSize: ico
 const pickerIcon = L.divIcon({ html: '🚚', className: 'picker-icon', iconSize: iconSize });
 const institutionIcon = L.divIcon({ html: '🏛', className: 'institution-icon', iconSize: iconSize });
 
-// Sample names for each type (expanded to cover more of Gujarat)
-const donorNames = ['Community Kitchen Ahmedabad', 'Anand Hotel Vadodara', 'Rajus Dhabha Surat', 'Punjabi Rasoi Rajkot', 'Gupta Bhojanalay Gandhinagar', 'Jamnagar Food Court', 'Bhavnagar Caterers', 'Junagadh Tiffin Services'];
-const deliveryNames = ['Vasna Slum Ahmedabad', 'Gota Shelter Gandhinagar', 'Prerna Orphanage Vadodara', 'Jeevan Jyoti Old Age Home Surat', 'Nava Vadaj Colony Rajkot', 'Bhuj Relief Camp', 'Porbandar Fishermen Colony', 'Mehsana Rural School'];
-const ngoNames = ['Seva Food Bank Ahmedabad', 'Anna Dan NGO Surat', 'Khushiyon Ka Langar Vadodara', 'Annapurna Trust Rajkot', 'Gujarat Food Relief', 'Saurashtra Seva Samiti', 'Kutch Mitra Mandal'];
-const volunteerNames = ['Vivek Sharma', 'Priya Patel', 'Amit Joshi', 'Rohit Verma', 'Neha Nair', 'Raj Bhatt', 'Meera Desai', 'Karan Mehta'];
-const hostNames = ['Sarvodaya Community Center Ahmedabad', 'Amul School Host Anand', 'Sankalp Bhavan Vadodara', 'Surat Municipal Corporation', 'Rajkot Civil Hospital', 'Bhavnagar University'];
-const pickerNames = ['Deepak Singh', 'Mohammed Rafi', 'Sanjay Kumar', 'Ramesh Solanki', 'Arjun Yadav', 'Prakash Patel', 'Fatima Sheikh', 'Ravi Chauhan'];
+// Sample names for each type
+const donorNames = ['Community Kitchen', 'Anand Hotel', 'Rajus Dhabha', 'Punjabi Rasoi', 'Gupta Bhojanalay'];
+const deliveryNames = ['Vasna Slum', 'Gota Shelter', 'Prerna Orphanage', 'Jeevan Jyoti Old Age Home', 'Nava Vadaj Colony'];
+const ngoNames = ['Seva Food Bank', 'Anna Dan NGO', 'Khushiyon Ka Langar', 'Annapurna Trust'];
+const volunteerNames = ['Vivek Sharma', 'Priya Patel', 'Amit Joshi', 'Rohit Verma', 'Neha Nair'];
+const hostNames = ['Sarvodaya Community Center', 'Amul School Host', 'Sankalp Bhavan'];
+const pickerNames = ['Deepak Singh', 'Mohammed Rafi', 'Sanjay Kumar', 'Ramesh Solanki', 'Arjun Yadav'];
 
 // Function to add markers of different types
 function addMarkers(type, names, icon) {
     for (let i = 0; i < names.length; i++) {
-        const coord = getRandomCoord(gujaratCoords, 300);
+        const coord = getRandomCoord(ahmedabadCoords, 5);
         const marker = L.marker(coord, { icon: icon }).addTo(map);
         
         let popupContent = `<b>${type}:</b> ${names[i]}<br>`;
@@ -96,13 +87,10 @@ function simulateFoodJourney() {
 
     foodJourneys.push(journey);
 
-    routingControl.setWaypoints([
-        L.latLng(donor.coord[0], donor.coord[1]),
-        L.latLng(picker.coord[0], picker.coord[1]),
-        L.latLng(deliveryLocation.coord[0], deliveryLocation.coord[1])
-    ]);
+    const journeyLine = L.polyline([donor.coord, picker.coord, deliveryLocation.coord], { color: 'red' }).addTo(map);
 
     setTimeout(() => {
+        journeyLine.setStyle({ color: 'green' });
         journey.status = 'Completed';
         updateJourneyInfo();
     }, 5000);
@@ -113,52 +101,12 @@ function simulateFoodJourney() {
 function scheduleEvent() {
     const eventType = prompt('Enter event type (e.g., Surplus Sunday, Chef Session):');
     const eventDate = prompt('Enter event date (YYYY-MM-DD):');
-    const eventLocation = prompt('Enter event location (e.g., Ahmedabad, Surat):');
+    const eventLocation = prompt('Enter event location:');
     if (eventType && eventDate && eventLocation) {
-        // Find the nearest marker to the event location
-        const nearestMarker = findNearestMarker(eventLocation);
-        if (nearestMarker) {
-            // Calculate route from current location to event location
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const start = L.latLng(position.coords.latitude, position.coords.longitude);
-                    const end = L.latLng(nearestMarker.coord[0], nearestMarker.coord[1]);
-                    
-                    routingControl.setWaypoints([start, end]);
-                    
-                    alert(`Event scheduled:\nType: ${eventType}\nDate: ${eventDate}\nLocation: ${eventLocation}\n\nRoute calculated to the nearest point: ${nearestMarker.name}`);
-                },
-                () => {
-                    alert('Unable to get your current location. Please allow location access.');
-                }
-            );
-        } else {
-            alert(`Event scheduled, but couldn't find a nearby location on the map:\nType: ${eventType}\nDate: ${eventDate}\nLocation: ${eventLocation}`);
-        }
+        alert(`Event scheduled:\nType: ${eventType}\nDate: ${eventDate}\nLocation: ${eventLocation}`);
     } else {
         alert('Event scheduling cancelled');
     }
-}
-
-function findNearestMarker(locationName) {
-    const locationNameLower = locationName.toLowerCase();
-    let nearestMarker = null;
-    let shortestDistance = Infinity;
-
-    Object.values(markers).forEach(marker => {
-        if (marker.name.toLowerCase().includes(locationNameLower)) {
-            nearestMarker = marker;
-            return;
-        }
-        
-        const distance = L.latLng(marker.coord).distanceTo(gujaratCoords);
-        if (distance < shortestDistance) {
-            shortestDistance = distance;
-            nearestMarker = marker;
-        }
-    });
-
-    return nearestMarker;
 }
 
 function createCommunityPage() {
